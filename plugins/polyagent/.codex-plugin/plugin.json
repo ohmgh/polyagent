@@ -1,7 +1,7 @@
 {
   "name": "polyagent",
-  "version": "1.0.0",
-  "description": "Configurable task routing and delegation.",
+  "version": "1.1.0",
+  "description": "Profile-based automatic subagent delegation.",
   "author": {
     "name": "ohm"
   },

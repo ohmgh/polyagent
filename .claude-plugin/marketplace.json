@@ -3,12 +3,12 @@
   "owner": {
     "name": "ohm"
   },
-  "description": "Configurable task routing and delegation.",
+  "description": "Profile-based automatic subagent delegation.",
   "plugins": [
     {
       "name": "polyagent",
       "source": "./plugins/polyagent",
-      "description": "Configurable task routing and delegation."
+      "description": "Profile-based automatic subagent delegation."
     }
   ]
 }

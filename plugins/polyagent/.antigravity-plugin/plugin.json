@@ -1,0 +1,16 @@
+{
+  "name": "polyagent",
+  "displayName": "Polyagent",
+  "version": "1.1.0",
+  "description": "Profile-based automatic subagent delegation.",
+  "author": {
+    "name": "ohm"
+  },
+  "homepage": "https://github.com/ohmgh/polyagent",
+  "repository": "https://github.com/ohmgh/polyagent",
+  "suggestedPrompts": [
+    "Use Polyagent to investigate this project.",
+    "Review the recent changes with Polyagent.",
+    "Use Polyagent with software.default to plan and implement a change."
+  ]
+}
