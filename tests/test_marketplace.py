@@ -35,6 +35,7 @@ def plugin_files(version: str, marker: str = "A") -> dict[str, bytes]:
         "skills/polyagent/agents/openai.yaml": b"interface: {}\n",
         ".codex-plugin/plugin.json": manifest,
         ".claude-plugin/plugin.json": manifest,
+        ".antigravity-plugin/plugin.json": manifest,
     }
     for profile in PROFILES:
         for table in TABLES:
@@ -131,6 +132,7 @@ def test_candidate_rejects_extra_catalog_plugin(tmp_path: Path) -> None:
 @pytest.mark.parametrize("missing", [
     ".claude-plugin/marketplace.json",
     "plugins/polyagent/.claude-plugin/plugin.json",
+    "plugins/polyagent/.antigravity-plugin/plugin.json",
     "plugins/polyagent/LICENSE",
     "plugins/polyagent/skills/polyagent/profiles/general.default/routes.tsv",
     "plugins/polyagent/skills/polyagent/profiles/software.default/tasks.tsv",
@@ -154,6 +156,11 @@ def test_candidate_rejects_mismatched_identity(tmp_path: Path) -> None:
     write_json(tree / "plugins/polyagent/.codex-plugin/plugin.json",
                {"name": "other", "version": "0.1.0"})
     with pytest.raises(ValueError, match="Codex manifest"):
+        marketplace.inspect(tree, "release/v0.1.0", source)
+    tree = candidate(tmp_path, "0.1.0")
+    write_json(tree / "plugins/polyagent/.antigravity-plugin/plugin.json",
+               {"name": "polyagent", "version": "0.0.9"})
+    with pytest.raises(ValueError, match="Antigravity manifest"):
         marketplace.inspect(tree, "release/v0.1.0", source)
     tree = candidate(tmp_path, "0.1.0")
     write_json(tree / ".claude-plugin/marketplace.json",

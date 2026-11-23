@@ -28,6 +28,7 @@ REQUIRED = {
     ".claude-plugin/marketplace.json",
     f"{PLUGIN}/.codex-plugin/plugin.json",
     f"{PLUGIN}/.claude-plugin/plugin.json",
+    f"{PLUGIN}/.antigravity-plugin/plugin.json",
     f"{PLUGIN}/LICENSE",
     f"{SKILL}/SKILL.md",
     f"{SKILL}/agents/openai.yaml",
@@ -127,7 +128,7 @@ def inspect(root: Path, tag: str, commit: str) -> dict[str, object]:
     files = inventory(root)
     version = tag.removeprefix("release/v")
     plugin = root / PLUGIN
-    for host in ("codex", "claude"):
+    for host in ("codex", "claude", "antigravity"):
         manifest = json.loads((plugin / f".{host}-plugin/plugin.json").read_text())
         if manifest.get("version") != version or manifest.get("name") != "polyagent":
             fail(f"{host.capitalize()} manifest identity differs from release.")

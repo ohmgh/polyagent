@@ -29,7 +29,8 @@ def test_source_and_package_contain_only_polyagent(packaged):
     plugin = packaged / "plugins/polyagent"
     assert_bundled_resources(plugin)
     assert {path.relative_to(plugin).as_posix() for path in plugin.rglob("*") if path.is_file()} == {
-        ".codex-plugin/plugin.json", ".claude-plugin/plugin.json", "LICENSE",
+        ".codex-plugin/plugin.json", ".claude-plugin/plugin.json",
+        ".antigravity-plugin/plugin.json", "LICENSE",
         "skills/polyagent/SKILL.md", "skills/polyagent/agents/openai.yaml",
         "skills/polyagent/references/delegation.md",
         *(f"skills/polyagent/profiles/{profile}/{table}" for profile in PROFILES for table in TABLES),
@@ -56,7 +57,7 @@ def test_codex_manifest_and_catalog(packaged):
     assert catalog["plugins"][0]["source"] == {"source": "local", "path": "./plugins/polyagent"}
     plugin = packaged / "plugins/polyagent"
     assert {path.name for path in plugin.iterdir() if path.name.startswith(".")} == {
-        ".codex-plugin", ".claude-plugin"}
+        ".codex-plugin", ".claude-plugin", ".antigravity-plugin"}
 
 
 def test_claude_manifest_and_catalog(packaged):
@@ -68,6 +69,26 @@ def test_claude_manifest_and_catalog(packaged):
     assert catalog["name"] == "polyagent"
     assert catalog["plugins"] == [{"name": "polyagent", "source": "./plugins/polyagent",
                                    "description": manifest["description"]}]
+
+
+def test_antigravity_manifest(packaged):
+    version = package.manifest_version(ROOT)
+    manifest = json.loads(
+        (packaged / "plugins/polyagent/.antigravity-plugin/plugin.json").read_text()
+    )
+    allowed = {"name", "displayName", "version", "description", "author",
+               "homepage", "repository", "logo", "suggestedPrompts", "disabled"}
+    assert set(manifest) <= allowed
+    assert manifest["version"] == version
+    assert manifest["name"] == "polyagent"
+    assert manifest["displayName"] == "Polyagent"
+    assert manifest["description"] == package.DESCRIPTION
+    assert manifest["author"] == {"name": "ohm"}
+    assert manifest["homepage"] == "https://github.com/ohmgh/polyagent"
+    assert manifest["repository"] == "https://github.com/ohmgh/polyagent"
+    prompts = manifest["suggestedPrompts"]
+    assert isinstance(prompts, list) and 1 <= len(prompts) <= 3
+    assert all(isinstance(item, str) and item.strip() for item in prompts)
 
 
 def test_build_requires_agreeing_manifest_versions(tmp_path):

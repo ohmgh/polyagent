@@ -1,9 +1,9 @@
 # Polyagent
 
-Polyagent decides which model does each piece of work in a Codex or Claude Code session. Instead of
-explaining it in a prompt, you write a profile: a few small tables that say which model and effort
-handles each kind of task at each difficulty. The main agent hands matching work to the subagent
-you chose, instead of doing everything on one model in one growing context.
+Polyagent decides which model does each piece of work in a Codex, Claude Code, or Antigravity
+session. Instead of explaining it in a prompt, you write a profile: a few small tables that say
+which model and effort handles each kind of task at each difficulty. The main agent hands matching
+work to the subagent you chose, instead of doing everything on one model in one growing context.
 
 ![Polyagent Delegation Flow](images/delegation_flow.png)
 
@@ -15,10 +15,10 @@ What you get:
   share.
 - Fallbacks. A band can list several models in order of preference, and the main agent is always
   the last resort.
-- One profile for every host. The same tables work in Codex and in Claude Code, and another host is
-  a few more rows.
-- Cross-vendor callouts. If you turn them on, a Codex session can hand work to Claude models and a
-  Claude Code session can hand work to Codex models.
+- One profile for every host. The same tables work in Codex, Claude Code, and Antigravity, and
+  another host is a few more rows.
+- Cross-vendor callouts. If you turn them on, a session can hand work to another host's models,
+  such as Codex calling Claude Code, Claude Code calling Codex, or either calling Antigravity.
 - Subagent reuse. A follow-up task goes back to the idle subagent that already has the context
   instead of starting a new one. You can turn this off.
 - An optional directive, such as "keep quick tasks, and tasks that depend on this conversation, at
@@ -32,8 +32,8 @@ What you get:
   → band: 9 • gpt-6.2-astra: low • skills: none
   ```
 
-Polyagent is a plain skill. It runs wherever Codex or Claude Code runs, from the terminal or the
-desktop app.
+Polyagent is a plain skill. It runs wherever Codex, Claude Code, or Antigravity runs, from the
+terminal or the desktop app.
 
 ## Installation
 
@@ -52,12 +52,21 @@ claude plugin marketplace add ohmgh/polyagent#marketplace
 claude plugin install polyagent@polyagent
 ```
 
+For Antigravity (using the `agy` CLI, or copy `plugins/polyagent` into
+`~/.gemini/config/plugins/polyagent`):
+
+```sh
+git clone --branch marketplace --depth 1 https://github.com/ohmgh/polyagent.git /tmp/polyagent
+agy plugin install /tmp/polyagent/plugins/polyagent
+```
+
 Start a new session afterwards so the skill is picked up.
 
 ## Usage
 
 Once installed, routing applies on its own as you work. You can also invoke the skill directly,
-with `$polyagent:polyagent` in Codex or `/polyagent:polyagent` in Claude Code:
+with `$polyagent:polyagent` in Codex, `/polyagent:polyagent` in Claude Code, or `/polyagent` in
+Antigravity:
 
 ```text
 $polyagent:polyagent --profile software.default review the configuration parsing
@@ -80,7 +89,7 @@ Everything is configured in `.tsv` files, with one tab between columns.
 Two profiles are bundled. `software.default` is the default and routes coding work: reviews,
 design, debugging, implementation and test runs. `general.default` is for other knowledge work,
 such as research, assessing a document or plan, and long-form writing. Both have model and effort
-choices for Codex and for Claude Code.
+choices for Codex, Claude Code, and Antigravity.
 
 Out of the box they are cautious. Easy work stays with the main agent, and so does anything that
 depends on the conversation so far. Investigation and test runs are handed off earliest, because
@@ -118,7 +127,7 @@ files.
 | key | value |
 |---|---|
 | directive | A sentence telling the main agent which work to keep for itself, or `-` for none. Ignored when you ask for delegation explicitly. |
-| callouts | Other hosts whose models this session may hand work to, `codex` or `claude`, comma-separated without spaces, or `-` for none. |
+| callouts | Other hosts whose models this session may hand work to, `codex`, `claude`, or `antigravity`, comma-separated without spaces, or `-` for none. |
 | reuse_agents | `on`, the default, lets a follow-up task go back to an idle subagent that already has the context. `off` starts a new subagent each time. |
 
 ```tsv
@@ -167,10 +176,10 @@ host.
 
 | Column | Accepts |
 |---|---|
-| host | The host whose session the row applies to, `codex` or `claude`. |
+| host | The host whose session the row applies to, `codex`, `claude`, or `antigravity`. |
 | route | A routing group named in `tasks.tsv`. |
 | difficulty | The upper bound of a difficulty band, from `1` to `10`. Each host's group must end at `10`. |
-| model | A model of that host, as its subagent tool names it, or `-` for the main agent. |
+| model | A model of that host, as its subagent tool names it (in Antigravity, the base model name paired with `effort` for `swarm`), or `-` for the main agent. |
 | effort | The model's reasoning effort, or `-` with a `-` model. |
 
 The main agent grades each task from 1 to 10 for risk, complexity and ambiguity, and the highest
@@ -219,7 +228,8 @@ model:
 Bands the main agent keeps for itself stay with it; callouts only extend bands that already name a
 model. The bundled profiles name no callouts, so they stay within one host until you opt in. Naming
 a host only permits the callout. Polyagent does not install or sign in to the other tool, so you
-need a working way to run it from your session.
+need a working way to run it from your session (for `antigravity`, the `agy` CLI installed and
+signed in).
 
 Once a subagent has been started, Polyagent does not retry or reroute on its own if it fails. The
 main agent tells you what happened and you decide what to do next.

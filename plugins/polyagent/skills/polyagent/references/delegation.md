@@ -8,19 +8,21 @@ difficulty.
 
 ## 2. Select
 
-The host is the harness running this session: `codex` in Codex, `claude` in Claude Code. Read it
-and your role (`root`, or `delegate` when you are a subagent) from the active session, not from
-model names or environment variables. If the host cannot be determined, keep the outcome at root.
+The host is the harness running this session: `codex` in Codex, `claude` in Claude Code,
+`antigravity` in Antigravity. Read it and your role (`root`, or `delegate` when you are a subagent
+or swarm worker) from the active session, not from model names or environment variables. If the host
+cannot be determined, keep the outcome at root.
 
-Read the active native subagent tool's schema and description. When either advertises a model set,
-that set filters your host's rows, using the tool's identifiers. This includes Codex's "Available
-model overrides" even when `model` is a string without an enum, and Claude Code's Agent model
-values. It says nothing about other hosts.
+Read the active native subagent tool's schema, description, or model-list action; in Antigravity,
+use `swarm` and its `models` action (`all: true`). When it advertises a model set, that set filters
+your host's rows, using the tool's identifiers to match either `model` or `model-effort`. This
+includes Codex's "Available model overrides" even when `model` is a string without an enum, Claude
+Code's Agent model values, and Antigravity's `swarm` model list. It says nothing about other hosts.
 
 1. Among the `routes.tsv` rows for your host and the task's route, take the first band whose
    difficulty is at least the task's difficulty. Its rows, in order, are the candidates. Drop a row
-   whose model an advertised set lacks; without an advertised set, keep every row. A `-` row means
-   the root and ends the list.
+   whose model (or `model-effort`) an advertised set lacks; without an advertised set, keep every
+   row. A `-` row means the root and ends the list.
 2. If your role is `root`, your band is not `-`, and `callouts` names other hosts, repeat step 1
    for each named host in order and append its rows as external candidates tagged with that host.
 3. The root is the last candidate.
@@ -51,6 +53,12 @@ context. For a fresh inherited candidate, leave model and effort unset without i
 mode. A requested full-history fork conflicts with selected overrides under that contract; a
 self-contained message does not fulfill full history.
 
+In Antigravity, bind native candidates to `swarm` (`action: "add"`) rather than `invoke_subagent`:
+map a selected candidate to `model: "<model>-<effort>"` and leave `model` unset for an inherited
+candidate; set `name`, `brief`, and `workspace` (`"inherit"` for read-only or verification work,
+`"share"` for concurrent writers, or `"branch"` when isolation is requested), leaving `fork` unset
+unless history forking is requested.
+
 If mandatory controls, context, or authority cannot be preserved, try another available binding for
 the same candidate. If none works, stop only the affected dispatch before announcement or launch and
 continue independent authorized work. Do not silently drop controls, downgrade settings, or skip to
@@ -71,9 +79,11 @@ The binding must preserve the selected host, model, effort, and requested contro
 settings plus documented continuation behavior can establish compatibility; contrary observed
 settings disqualify reuse. For inherited candidates, establish compatibility with the current
 parent's model and effort. If compatibility is unknown or the host cannot reliably continue and
-track another execution, use a fresh child with the same bound candidate. Do not change candidate
-order or settings, wait for a busy child, or interrupt one to make reuse possible. Resolve or report
-an unresolved prior dispatch for this outcome rather than replacing it, including on later turns.
+track another execution, use a fresh child with the same bound candidate. In Antigravity, check
+`swarm` `status` for a `waiting` worker with the same bound model and continue it on the board
+without switching its model (`action: "model"`) or killing it. Do not change candidate order or
+settings, wait for a busy child, or interrupt one to make reuse possible. Resolve or report an
+unresolved prior dispatch for this outcome rather than replacing it, including on later turns.
 
 For CLI callouts, track the persisted conversation ID separately from each process handle. Resume
 that exact ID only after the previous invocation has terminated, with the same working directory,

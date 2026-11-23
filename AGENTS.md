@@ -2,9 +2,9 @@
 
 ## Product
 
-- Build the stock Codex and Claude Code routing skill: Markdown and TSV that the agent reads, with
-  no runtime. Keep the repository and its builds independent of other projects and of Git; use the
-  small packaging script.
+- Build the stock Codex, Claude Code, and Antigravity routing skill: Markdown and TSV that the
+  agent reads, with no runtime. Keep the repository and its builds independent of other projects
+  and of Git; use the small packaging script.
 - Keep table shapes explicit and checked by `scripts/profiles.py`. The host harness owns model
   capability acceptance.
 - Keep one profile format for all hosts. `routes.tsv` is keyed by host, rows with the same host,

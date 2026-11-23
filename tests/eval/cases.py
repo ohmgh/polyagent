@@ -23,7 +23,16 @@ CODEX = ["gpt-6-luna", "gpt-6-sol", "gpt-6.2-sol", "gpt-6.2-astra"]
 CODEX_NO_ASTRA = ["gpt-6-luna", "gpt-6.2-sol"]
 CLAUDE = ["sonnet", "opus", "haiku"]
 CLAUDE_FABLE = ["sonnet", "opus", "haiku", "fable"]
-SD, TC, TS, GD = "software.default", "team.callouts", "team.skills", "general.default"
+ANTIGRAVITY = [
+    "gemini-4-hydrogen-low", "gemini-4-hydrogen-medium", "gemini-4-hydrogen-high",
+    "gemini-4-neon-medium", "gemini-4-neon-high", "gemini-4-neon-xhigh",
+    "gemini-4-argon-medium", "gemini-4-argon-high",
+]
+ANTIGRAVITY_NO_ARGON = [m for m in ANTIGRAVITY if not m.startswith("gemini-4-argon-")]
+ANTIGRAVITY_NO_XHIGH = [m for m in ANTIGRAVITY if not m.endswith("-xhigh")]
+SD, TC, TA, TS, GD = (
+    "software.default", "team.callouts", "team.ag-callouts", "team.skills", "general.default"
+)
 
 
 def case(id: int, profile: str, action: str, deliverable: str, grades: tuple[int, int, int],
@@ -86,18 +95,30 @@ CASES = [
          installed=("code-review", "coverage", "tdd")),
     case(46, TS, "implement", "change", (7, 7, 7), "codex", CODEX,
          installed=("code-review", "coverage", "tdd")),
+    case(47, SD, "implement", "change", (4, 4, 4), "antigravity", ANTIGRAVITY),
+    case(48, SD, "implement", "change", (6, 6, 6), "antigravity", ANTIGRAVITY),
+    case(49, SD, "implement", "change", (10, 1, 1), "antigravity", ANTIGRAVITY),
+    case(50, SD, "implement", "change", (10, 1, 1), "antigravity", ANTIGRAVITY_NO_XHIGH),
+    case(51, SD, "review", "assessment", (9, 3, 3), "antigravity", ANTIGRAVITY),
+    case(52, SD, "review", "assessment", (9, 3, 3), "antigravity", ANTIGRAVITY_NO_ARGON),
+    case(53, GD, "evaluate", "assessment", (10, 5, 5), "antigravity", ANTIGRAVITY),
+    case(54, TC, "implement", "change", (9, 9, 9), "antigravity", ANTIGRAVITY),
+    case(55, TC, "implement", "change", (9, 9, 9), "antigravity", ANTIGRAVITY, role="delegate"),
+    case(56, TA, "review", "assessment", (9, 9, 9), "codex", CODEX),
 ]
 
 
 def materialize(directory: Path) -> Path:
-    """Copy the bundled profiles and add two variants of software.default.
+    """Copy the bundled profiles and add variants of software.default.
 
-    team.callouts names Claude in `callouts`. team.skills requires skills for two tasks; the bundled
-    profiles require none, so it is the only place a non-empty skills list is exercised.
+    team.callouts names Claude in `callouts`, team.ag-callouts names Antigravity, and team.skills
+    requires skills for two tasks; the bundled profiles require none, so it is the only place a
+    non-empty skills list is exercised.
     """
     shutil.copytree(BUNDLED, directory, dirs_exist_ok=True)
     for name, table, changes in (
         (TC, "profile.tsv", [("callouts\t-\n", "callouts\tclaude\n")]),
+        (TA, "profile.tsv", [("callouts\t-\n", "callouts\tantigravity\n")]),
         (TS, "tasks.tsv", [("defects and risks.\t-\n", "defects and risks.\tcode-review\n"),
                            ("test definitions.\t-\n", "test definitions.\ttdd,coverage\n")]),
     ):

@@ -10,7 +10,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TAG = re.compile(r"release/v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 MANIFESTS = ("plugins/polyagent/.codex-plugin/plugin.json",
-             "plugins/polyagent/.claude-plugin/plugin.json")
+             "plugins/polyagent/.claude-plugin/plugin.json",
+             "plugins/polyagent/.antigravity-plugin/plugin.json")
 
 
 def git(root: Path, *args: str) -> str:
@@ -36,7 +37,7 @@ def bump_level(message: str) -> int:
 
 
 def manifest_version(root: Path) -> str:
-    """The plugin version, which both host manifests must state identically."""
+    """The plugin version, which all host manifests must state identically."""
     versions = {json.loads((root / name).read_text())["version"] for name in MANIFESTS}
     if len(versions) != 1:
         raise ValueError("The plugin manifests disagree on the version.")

@@ -11,7 +11,8 @@ assert spec and spec.loader
 release = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(release)
 MANIFESTS = ("plugins/polyagent/.codex-plugin/plugin.json",
-             "plugins/polyagent/.claude-plugin/plugin.json")
+             "plugins/polyagent/.claude-plugin/plugin.json",
+             "plugins/polyagent/.antigravity-plugin/plugin.json")
 
 
 @pytest.mark.parametrize(("message", "level"), [

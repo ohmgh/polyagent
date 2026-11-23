@@ -165,7 +165,7 @@ def local_repository(tmp_path):
                                        stderr=subprocess.PIPE).strip()
     git("config", "user.name", "Test")
     git("config", "user.email", "test@example.invalid")
-    for host in ("codex", "claude"):
+    for host in ("codex", "claude", "antigravity"):
         path = root / f"plugins/polyagent/.{host}-plugin/plugin.json"
         path.parent.mkdir(parents=True)
         path.write_text('{"name": "polyagent", "version": "1.0.0"}\n')

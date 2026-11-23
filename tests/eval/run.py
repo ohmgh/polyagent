@@ -99,13 +99,18 @@ The skill gives this rule for the task a case matches:
 
 
 def ask(host: str, model: str, text: str, cwd: Path) -> str:
+    stdin_text: str | None = text
     if host == "claude":
         command = ["claude", "-p", "--model", model, "--output-format", "text", "--tools", "",
                    "--no-session-persistence"]
+    elif host == "antigravity":
+        command = ["agy", "--model", model, "--output-format", "text",
+                   "--disable-slash-commands", "-p", text]
+        stdin_text = None
     else:
         command = ["codex", "exec", "-m", model, "-s", "read-only", "--skip-git-repo-check",
                    "--ephemeral", "-"]
-    result = subprocess.run(command, input=text, cwd=cwd, text=True, capture_output=True,
+    result = subprocess.run(command, input=stdin_text, cwd=cwd, text=True, capture_output=True,
                             check=False)
     if result.returncode:
         raise SystemExit(f"{command[0]} failed: {result.stderr.strip()}")
@@ -138,7 +143,7 @@ def score(selected: list[dict], answers: dict[int, dict], directory: Path) -> li
 
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
-    parser.add_argument("--host", required=True, choices=["codex", "claude"])
+    parser.add_argument("--host", required=True, choices=["codex", "claude", "antigravity"])
     parser.add_argument("--model", required=True)
     parser.add_argument("--cases", help="comma-separated case ids; default all")
     parser.add_argument("--show-prompt", action="store_true")

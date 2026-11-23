@@ -163,8 +163,14 @@ def select(data: dict, host: str | None, action: str, deliverable: str, grades: 
         return {**matched, "band": None, "candidates": ["-"]}
     models = models or {}
     chosen, rows = band(data, host, task["route"], difficulty)
-    candidates = [f"{model}:{effort}" for model, effort in rows
-                  if model != "-" and (host not in models or model in models[host])]
+    candidates = [
+        f"{model}:{effort}" for model, effort in rows
+        if model != "-" and (
+            host not in models
+            or model in models[host]
+            or f"{model}-{effort}" in models[host]
+        )
+    ]
     if rows[-1][0] != "-" and role == "root":
         for other in data["callouts"]:
             if other != host and (other, task["route"]) in data["routes"]:

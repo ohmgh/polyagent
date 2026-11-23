@@ -38,7 +38,7 @@ def packaged():
 
 def assert_bundled_resources(plugin: Path) -> None:
     """Require the complete bundled profile and host metadata layout in an installed copy."""
-    hosts = {".codex-plugin", ".claude-plugin"}
+    hosts = {".codex-plugin", ".claude-plugin", ".antigravity-plugin"}
     assert {path.name for path in plugin.iterdir() if path.name.startswith(".")} == hosts
     for host in hosts:
         assert {path.name for path in (plugin / host).iterdir()} == {"plugin.json"}

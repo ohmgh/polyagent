@@ -167,7 +167,7 @@ def test_git_marketplace_install_update_and_lifecycle(packaged, tmp_path):
 
         # Snapshot B changes only text, as a release does, and carries its source trailers.
         plugin = source / "plugins/polyagent"
-        for host in ("codex", "claude"):
+        for host in ("codex", "claude", "antigravity"):
             manifest = plugin / f".{host}-plugin/plugin.json"
             data = json.loads(manifest.read_text())
             data["version"] = version_b

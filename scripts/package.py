@@ -1,4 +1,4 @@
-"""Assemble the Codex and Claude Code plugin and its marketplace catalogs in dist/marketplace."""
+"""Assemble the Codex, Claude Code, and Antigravity plugin and catalogs in dist/marketplace."""
 
 import argparse
 import json
@@ -8,11 +8,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DESCRIPTION = "Profile-based automatic subagent delegation."
 MANIFESTS = ("plugins/polyagent/.codex-plugin/plugin.json",
-             "plugins/polyagent/.claude-plugin/plugin.json")
+             "plugins/polyagent/.claude-plugin/plugin.json",
+             "plugins/polyagent/.antigravity-plugin/plugin.json")
 
 
 def manifest_version(root: Path = ROOT) -> str:
-    """The plugin version, which both host manifests must state identically."""
+    """The plugin version, which all host manifests must state identically."""
     versions = {json.loads((root / name).read_text())["version"] for name in MANIFESTS}
     if len(versions) != 1:
         raise ValueError("The plugin manifests disagree on the version.")

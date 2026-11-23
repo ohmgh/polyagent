@@ -30,7 +30,7 @@ def edit(directory: Path, table: str, old: str, new: str, profile: str = "softwa
 @pytest.mark.parametrize("profile", ["general.default", "software.default"])
 def test_bundled_profiles_lint_clean(profile):
     data = profiles.load(BUNDLED / profile)
-    assert data["hosts"] == ["claude", "codex"]
+    assert data["hosts"] == ["antigravity", "claude", "codex"]
     assert data["callouts"] == []
     assert {task["route"] for task in data["tasks"].values()} == {
         "comprehension", "investigation", "judgment", "construction", "procedure"}
@@ -41,8 +41,9 @@ def test_bundled_routes_are_grouped_by_host_then_route():
         rows = (BUNDLED / profile / "routes.tsv").read_text().splitlines()[1:]
         hosts = [row.split("\t")[0] for row in rows]
         assert hosts == sorted(hosts, key=hosts.index)
-        assert hosts.count("codex") == hosts.count("claude") and hosts[0] == "codex"
-        for host in ("codex", "claude"):
+        assert hosts.count("codex") == hosts.count("claude") == hosts.count("antigravity")
+        assert hosts[0] == "codex"
+        for host in ("codex", "claude", "antigravity"):
             routes = [row.split("\t")[1] for row in rows if row.startswith(host + "\t")]
             assert routes == sorted(routes, key=routes.index)
 
@@ -144,6 +145,16 @@ EXPECTED = {
     44: "skill coverage is missing",
     45: (7, ["opus:medium", "-"]),
     46: (8, ["gpt-6.2-sol:medium", "-"]),
+    47: (4, ["-"]),
+    48: (6, ["gemini-4-hydrogen:high", "-"]),
+    49: (10, ["gemini-4-neon:xhigh", "-"]),
+    50: (10, ["-"]),
+    51: (9, ["gemini-4-argon:medium", "-"]),
+    52: (9, ["-"]),
+    53: (10, ["gemini-4-argon:medium", "-"]),
+    54: (9, ["gemini-4-neon:high", "claude opus:high", "-"]),
+    55: (9, ["gemini-4-neon:high", "-"]),
+    56: (9, ["gpt-6.2-astra:medium", "antigravity gemini-4-argon:medium", "-"]),
 }
 SKILLS = {42: ["tdd", "coverage"], 43: ["tdd", "coverage"], 45: ["code-review"]}
 

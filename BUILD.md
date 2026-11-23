@@ -18,14 +18,15 @@ type checks and tests. The tests install the packaged plugin into disposable Cod
 and make no model calls. `build` assembles `dist/marketplace`, a verbatim copy of the plugin with
 both marketplace catalogs.
 
-`just eval --host claude --model MODEL` or `just eval --host codex --model MODEL` asks a real model
-to apply the shipped selection procedure and skills rule to the routing cases in `tests/eval` and
-scores the answers against `scripts/profiles.py`. It costs inference, so it is not part of
-`verify`; run it for both hosts before a release that changes the skill text or the tables.
+`just eval --host claude --model MODEL`, `just eval --host codex --model MODEL`, or
+`just eval --host antigravity --model MODEL` asks a real model to apply the shipped selection
+procedure and skills rule to the routing cases in `tests/eval` and scores the answers against
+`scripts/profiles.py`. It costs inference, so it is not part of `verify`; run it before a release
+that changes the skill text or the tables.
 
 ## Local install
 
-Both paths change your own Codex or Claude Code configuration. For Codex:
+Each path changes your own host configuration. For Codex:
 
 ```sh
 codex plugin marketplace add "$PWD/dist/marketplace"
@@ -37,6 +38,13 @@ For Claude Code:
 ```sh
 claude plugin marketplace add "$PWD/dist/marketplace"
 claude plugin install polyagent@polyagent
+```
+
+For Antigravity:
+
+```sh
+agy plugin validate --strict "$PWD/dist/marketplace/plugins/polyagent"
+agy plugin install "$PWD/dist/marketplace/plugins/polyagent"
 ```
 
 ## Release
