@@ -1,0 +1,4 @@
+key	value
+directive	keep quick tasks, and tasks that depend on this conversation, at root
+callouts	-
+reuse_agents	on

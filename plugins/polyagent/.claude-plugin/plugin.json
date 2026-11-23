@@ -1,0 +1,10 @@
+{
+  "name": "polyagent",
+  "version": "1.0.0",
+  "description": "Configurable task routing and delegation.",
+  "author": {
+    "name": "ohm"
+  },
+  "homepage": "https://github.com/ohmgh/polyagent",
+  "license": "MIT"
+}
