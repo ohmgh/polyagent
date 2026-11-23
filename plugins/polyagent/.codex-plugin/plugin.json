@@ -1,6 +1,6 @@
 {
   "name": "polyagent",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Profile-based automatic subagent delegation.",
   "author": {
     "name": "ohm"
