@@ -6,7 +6,8 @@ import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DESCRIPTION = "Configurable task routing and delegation."
+DESCRIPTION = ("Profile-based automatic subagent delegation that routes every task to the right "
+               "model, runs work in parallel, and keeps the main context lean.")
 MANIFESTS = ("plugins/polyagent/.codex-plugin/plugin.json",
              "plugins/polyagent/.claude-plugin/plugin.json")
 

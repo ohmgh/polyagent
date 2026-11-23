@@ -1,7 +1,7 @@
 {
   "name": "polyagent",
   "version": "1.0.0",
-  "description": "Configurable task routing and delegation.",
+  "description": "Profile-based automatic subagent delegation that routes every task to the right model, runs work in parallel, and keeps the main context lean.",
   "author": {
     "name": "ohm"
   },
