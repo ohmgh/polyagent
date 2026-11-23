@@ -1,0 +1,12 @@
+action	deliverable	route	description	skills
+review	assessment	judgment	Assess code, design or plan for defects and risks.	-
+design	architecture	judgment	Propose software architecture and its tradeoffs.	-
+design	plan	judgment	Propose an implementation or test plan.	-
+diagnose	root-cause	investigation	Find the root cause of software behavior.	-
+investigate	codebase-map	investigation	Map code and its relationships.	-
+research	evidence-report	investigation	Search authoritative sources and report findings with evidence.	-
+inquire	answer	comprehension	Explain a bounded software concept or supplied code.	-
+implement	change	construction	Implement features, fixes or refactors; maintain dependencies, configuration, CI and documentation.	-
+implement	tests	construction	Change automated test definitions.	-
+execute	test-results	procedure	Run an existing test suite.	-
+execute	operation-result	procedure	Run an established software operation other than a test suite and report its result.	-

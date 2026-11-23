@@ -1,0 +1,6 @@
+interface:
+  display_name: "Polyagent"
+  short_description: "Route tasks using configured profiles"
+  default_prompt: "Use $polyagent to route this work using the configured profile."
+policy:
+  allow_implicit_invocation: true

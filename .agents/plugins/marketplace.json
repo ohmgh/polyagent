@@ -1,0 +1,20 @@
+{
+  "name": "polyagent",
+  "interface": {
+    "displayName": "Polyagent"
+  },
+  "plugins": [
+    {
+      "name": "polyagent",
+      "source": {
+        "source": "local",
+        "path": "./plugins/polyagent"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

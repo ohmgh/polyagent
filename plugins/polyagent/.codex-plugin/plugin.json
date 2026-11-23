@@ -1,0 +1,25 @@
+{
+  "name": "polyagent",
+  "version": "1.0.0",
+  "description": "Configurable task routing and delegation.",
+  "author": {
+    "name": "ohm"
+  },
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Polyagent",
+    "shortDescription": "Lightweight agentic task orchestration for specialization, parallelism and context isolation.",
+    "websiteURL": "https://github.com/ohmgh/polyagent",
+    "longDescription": "Route bounded work with configurable profiles.",
+    "developerName": "ohm",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use Polyagent to investigate this project."
+    ]
+  }
+}

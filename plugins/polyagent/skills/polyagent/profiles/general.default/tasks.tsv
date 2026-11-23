@@ -1,0 +1,11 @@
+action	deliverable	route	description	skills
+inquire	answer	comprehension	Answer or explain a question, including supplied material.	-
+research	evidence-report	investigation	Search authoritative sources and report findings with evidence.	-
+investigate	map	investigation	Map a subject and its relationships.	-
+investigate	diagnosis	investigation	Explain the cause of observed behavior.	-
+evaluate	assessment	judgment	Assess a document, option or plan against criteria, including critique and fact-checking.	-
+design	structure	judgment	Propose a structure or outline and its tradeoffs.	-
+design	plan	judgment	Propose a plan of action with its steps and tradeoffs.	-
+create	artifact	construction	Draft a new document, report, summary or other long-form content.	-
+revise	artifact	construction	Rewrite or edit supplied content for clarity, structure or tone.	-
+execute	operation-result	procedure	Perform a requested calculation or action in a tool or service and report its result.	-
